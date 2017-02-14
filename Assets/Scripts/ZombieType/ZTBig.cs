@@ -7,6 +7,7 @@ public class ZTBig : ZombieBase
 
 	void Start()
     {
+        transform.GetChild(0).localPosition = new Vector3(0, -1, 0);
         zombie = GetComponent<Zombie>();
         PossibleDropItem = new List<int>();
         PossibleDropItem.Add(1);

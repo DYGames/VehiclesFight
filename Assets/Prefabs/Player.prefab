@@ -1501,6 +1501,7 @@ MonoBehaviour:
   Money: 0
   CreepScore: 0
   EquipItem: 0
+  Weapons: []
 --- !u!114 &114091358806852290
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1871,7 +1872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
-  m_SendInterval: 0.033333335
+  m_SendInterval: 0.055555556
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0

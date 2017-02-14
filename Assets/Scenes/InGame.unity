@@ -1560,7 +1560,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 286177880}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 20, y: 2.013, z: 50}
+  m_LocalPosition: {x: 20, y: 2.013, z: 48}
   m_LocalScale: {x: 550, y: 1, z: 311}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2509,6 +2509,10 @@ MonoBehaviour:
   - {fileID: 1965826372996132, guid: 9e01c8ba9fa6fe34e82cb2cd274c0b32, type: 2}
   - {fileID: 1665336078705140, guid: c60d7f4652cd18a4aaf5bc1876a4908f, type: 2}
   - {fileID: 1992740294590024, guid: b34ee92f0a826b24693de6b49eb4eb2a, type: 2}
+  - {fileID: 1458264486088228, guid: a63f36de7ea6d944eba8fd97bb1ba229, type: 2}
+  - {fileID: 1982479579250236, guid: 50ea22d2e56d2354ead128bdc1e1d032, type: 2}
+  - {fileID: 1476211702293572, guid: 6a5231ac82ebfd04b8c2b80c494292a0, type: 2}
+  - {fileID: 1804170843833184, guid: 7c2006391271a0043bdeedf43dbda2a9, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -7936,6 +7940,11 @@ MonoBehaviour:
   StatusHPBar: {fileID: 1122561253}
   StatusHPText: {fileID: 115523852}
   gBarrier: {fileID: 1992740294590024, guid: b34ee92f0a826b24693de6b49eb4eb2a, type: 2}
+  ZombieMaterials:
+  - {fileID: 2100000, guid: 781151b11844e6949be9f0f3c694b8e8, type: 2}
+  - {fileID: 2100000, guid: 442e7ab5950b03243a32795f80832868, type: 2}
+  - {fileID: 2100000, guid: b4e431dc95faac84eb4ff97ed6ecac25, type: 2}
+  - {fileID: 2100000, guid: f8b63214fe5f8dc4da7ebde94f53b465, type: 2}
 --- !u!114 &1379605026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9716,8 +9725,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1737813489}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.476, y: 0.029999733, z: -1.159}
+  m_LocalRotation: {x: 0.11736936, y: 0.6658949, z: 0.10722033, w: -0.7289117}
+  m_LocalPosition: {x: 304.09616, y: -19.91353, z: -50.270023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1876897011}

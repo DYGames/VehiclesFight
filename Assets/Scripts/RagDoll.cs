@@ -11,6 +11,9 @@ public class RagDoll : MonoBehaviour
     Vector3 impact;
     float impactCount;
 
+    public List<GameObject> Hitlist;
+    public List<GameObject> MeshList;
+
     void Start()
     {
         impact = Vector3.zero;
@@ -22,7 +25,10 @@ public class RagDoll : MonoBehaviour
         {
             positions[i] = rigids[i].transform.position;
         }
-
+        Hitlist.ForEach(delegate (GameObject a)
+        {
+            a.GetComponent<CharacterJoint>().breakForce = 2;
+        });
         RagDollOff();
     }
 
@@ -60,12 +66,27 @@ public class RagDoll : MonoBehaviour
         if (hitinfo.transform.gameObject.CompareTag("Zombie"))
         {
             impactTarget = hitinfo.transform.GetComponent<Rigidbody>();
-            impactTarget.transform.parent = null;
             impact = forward * 0.7f;
             impactCount = Time.time + 0.25f;
+            bool ishitlist = false;
+            Hitlist.ForEach(delegate (GameObject a)
+            {
+                if (hitinfo.transform.gameObject.Equals(a)) ishitlist = true;
+            });
+            if (ishitlist)
+            {
+                Destroy(hitinfo.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>());
+                hitinfo.transform.GetChild(0).gameObject.AddComponent<MeshRenderer>().material = GameMng.instance.ZombieMaterials[(int)transform.parent.GetComponent<Zombie>().zombietype];
+            }
+            else
+            {
+                MeshList.ForEach(delegate (GameObject a)
+                {
+                    Destroy(a.GetComponent<SkinnedMeshRenderer>());
+                    a.AddComponent<MeshRenderer>().material = GameMng.instance.ZombieMaterials[(int)transform.parent.GetComponent<Zombie>().zombietype];
+                });
+            }
         }
-     //   if (!isDie)
-     //       Invoke("RagDollOffAndPosition", 0.25f);
     }
 
     void Update()

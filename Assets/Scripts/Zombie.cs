@@ -15,15 +15,6 @@ public class Zombie : NetworkBehaviour
         HEAVY,
     }
 
-    public enum ZOMBIEBEHAVIOR
-    {
-        NORMAL,
-        RUNANDSTOP,
-        JUMP,
-        BOMB,
-        CLIMB,
-    }
-
     public GObject gobject;
 
     public UnityEngine.AI.NavMeshAgent agent;
@@ -32,9 +23,6 @@ public class Zombie : NetworkBehaviour
 
     [SyncVar]
     public ZOMBIETYPE zombietype;
-    [SyncVar]
-    public ZOMBIEBEHAVIOR zombiebehavior;
-
     [SyncVar]
     public bool isDie;
     public List<int> tempitems;
@@ -52,7 +40,7 @@ public class Zombie : NetworkBehaviour
 
     Vector3 lastAgentVelocity;
     NavMeshPath lastAgentPath;
-    
+
     public RagDoll ragdoll;
 
     public bool dieprocessed;
@@ -62,6 +50,8 @@ public class Zombie : NetworkBehaviour
     [SyncVar]
     bool HitOnNextFrame;
 
+    public GameObject[] zombiemodels;
+
     void Awake()
     {
         MaxDistance = Mathf.Infinity;
@@ -69,14 +59,14 @@ public class Zombie : NetworkBehaviour
 
     void Start()
     {
+        GameObject model = Instantiate(zombiemodels[(int)zombietype], transform);
+        model.transform.localPosition = zombiemodels[(int)zombietype].transform.localPosition;
+        NetworkServer.Spawn(model);
         gobject = GetComponent<GObject>();
         ragdoll = GetComponentInChildren<RagDoll>();
         dieprocessed = false;
         agenttarget = null;
-        animator = GetComponent<Animator>();
-        Animator wta = GetComponentsInChildren<Animator>()[1];
-        animator.avatar = wta.avatar;
-        Destroy(wta);
+        animator = GetComponentsInChildren<Animator>()[0];
         gameObject.AddComponent(GameData.Instance.ZombieTypeTypes[(int)zombietype]);
         isDie = false;
         tempitems = new List<int>();
@@ -93,7 +83,6 @@ public class Zombie : NetworkBehaviour
         if (isDie && !dieprocessed)
         {
             dieprocessed = true;
-            GetComponent<CapsuleCollider>().enabled = false;
             agent.Stop();
             animator.enabled = false;
             Destroy(agent);
@@ -116,7 +105,7 @@ public class Zombie : NetworkBehaviour
         {
             if (collist[i].gameObject.Equals(agenttarget) && agent && agent.isActiveAndEnabled)
             {
-                animator.SetBool("isAttack", true);
+                //animator.SetBool("isAttack", true);
                 agent.Stop();
             }
         }
@@ -132,7 +121,7 @@ public class Zombie : NetworkBehaviour
     {
         Destroy(gameObject);
     }
-    
+
     void resume()
     {
         if (agent)
@@ -197,10 +186,10 @@ public class Zombie : NetworkBehaviour
             return null;
 
     }
-    
+
     public void Attack()
     {
-        animator.SetBool("isAttack", false);
+        //animator.SetBool("isAttack", false);
 
         if (!NetworkServer.active)
             return;

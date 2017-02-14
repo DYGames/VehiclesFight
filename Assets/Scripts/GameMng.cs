@@ -69,6 +69,8 @@ public class GameMng : NetworkBehaviour
 
     GObject targetObject;
 
+    public Material[] ZombieMaterials;
+
     void Start()
     {
         OffCount = 0;
@@ -128,7 +130,6 @@ public class GameMng : NetworkBehaviour
             {
                 GameObject zombie = Instantiate(zombieprefab, new Vector3(position.x, 4.5f, position.z), Quaternion.identity);
                 zombie.GetComponent<Zombie>().zombietype = (Zombie.ZOMBIETYPE)Random.Range(0, 4);
-                zombie.GetComponent<Zombie>().zombiebehavior = (Zombie.ZOMBIEBEHAVIOR)Random.Range(0, 5);
                 caller.GetComponent<WaveMng>().obj = zombie;
                 NetworkServer.Spawn(zombie);
             }
