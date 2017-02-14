@@ -5,14 +5,12 @@ using UnityEngine.Networking;
 
 public class ClearMng : NetworkBehaviour
 {
-    public static ClearMng instance;
     public GameObject RescueObject;
 
     public bool PlayerClear;
 
     void Start()
     {
-        instance = this;
         PlayerClear = false;
     }
 

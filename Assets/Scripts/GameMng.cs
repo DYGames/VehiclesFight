@@ -6,8 +6,31 @@ using UnityEngine.Networking;
 
 public class GameMng : NetworkBehaviour
 {
-    public static GameMng instance;
+    private static GameMng _instance;
+    public static GameMng instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                instance = FindObjectOfType<GameMng>();
+            }
+            return _instance;
+        }
+        private set
+        {
+            _instance = value;
+        }
+    }
 
+    public struct ZOB
+    {
+       public GameObject zombie;
+    }
+    public class ZombieObject : SyncListStruct<ZOB>
+    {
+
+    }
     public GameObject zombieprefab;
     public CanvasScaler canvas;
 
@@ -19,6 +42,11 @@ public class GameMng : NetworkBehaviour
     public int CurSpawnPoint;
     [SyncVar]
     public bool ClearFlag;
+    [SyncVar]
+    public bool StartWaveFlag;
+    [SyncVar]
+    public int CurrentWaveNum;
+    public ZombieObject SpawnZombies = new ZombieObject();
 
     public GameObject RescueBar;
     [HideInInspector]
@@ -35,14 +63,11 @@ public class GameMng : NetworkBehaviour
     public Image StatusHPBar;
     public Text StatusHPText;
 
+    public GameObject gBarrier;
+
     float OffCount;
 
     GObject targetObject;
-
-    void Awake()
-    {
-        instance = this;
-    }
 
     void Start()
     {
@@ -50,7 +75,6 @@ public class GameMng : NetworkBehaviour
         RemainTimeForRescue = 2.0f;
         isWaitForRescue = false;
         RescueProgress = RescueBar.transform.GetChild(0).GetComponent<Image>();
-        //Screen.SetResolution(1920, 1080, false);
     }
 
     void Update()
@@ -60,13 +84,12 @@ public class GameMng : NetworkBehaviour
             RescueBar.SetActive(true);
         }
 
-
         if (isWaitForRescue)
         {
             RescueProgress.fillAmount = RemainTimeForRescue / 60.0f;
             if(RemainTimeForRescue <= 0)
             {
-                ClearMng.instance.Clear();
+                FindObjectOfType<ThirdPersonCamera>().targetPlayer.clearmng.Clear();
                 isWaitForRescue = false;
             }
         }
@@ -123,6 +146,13 @@ public class GameMng : NetworkBehaviour
     {
         if (CurSpawnPoint == -1)
             CurSpawnPoint = Random.Range(0, GameObject.Find("SpawnPoints").transform.childCount);
+    }
+
+    [Command]
+    public void CmdSetStartWaveFlag(bool flag, int n)
+    {
+        StartWaveFlag = flag;
+        CurrentWaveNum = n;
     }
 
 }

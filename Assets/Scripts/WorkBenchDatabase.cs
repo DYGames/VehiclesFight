@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorkBenchDatabase : MonoBehaviour
+public class WorkBenchDatabase : Singleton<WorkBenchDatabase>
 {
-    public static WorkBenchDatabase instance;
-
     [System.Serializable]
     public struct ItemidAndQTY
     {
@@ -21,11 +19,6 @@ public class WorkBenchDatabase : MonoBehaviour
     }
 
     public List<WorkBenchSetDic> WorkBenchSetList;
-
-    void Awake()
-    {
-        instance = this;
-    }
 
     public int FindIdxById(int id)
     {

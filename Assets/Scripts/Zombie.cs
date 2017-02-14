@@ -26,8 +26,6 @@ public class Zombie : NetworkBehaviour
 
     public GObject gobject;
 
-    TextMesh hptext;
-
     public UnityEngine.AI.NavMeshAgent agent;
 
     public Transform targetPlayer;
@@ -55,8 +53,6 @@ public class Zombie : NetworkBehaviour
     Vector3 lastAgentVelocity;
     NavMeshPath lastAgentPath;
     
-    Rigidbody rigid;
-
     public RagDoll ragdoll;
 
     public bool dieprocessed;
@@ -76,15 +72,12 @@ public class Zombie : NetworkBehaviour
         gobject = GetComponent<GObject>();
         ragdoll = GetComponentInChildren<RagDoll>();
         dieprocessed = false;
-        rigid = GetComponent<Rigidbody>();
         agenttarget = null;
         animator = GetComponent<Animator>();
         Animator wta = GetComponentsInChildren<Animator>()[1];
         animator.avatar = wta.avatar;
         Destroy(wta);
         gameObject.AddComponent(GameData.Instance.ZombieTypeTypes[(int)zombietype]);
-        gameObject.AddComponent(GameData.Instance.ZombieBehaviorTypes[(int)zombiebehavior]);
-        hptext = GetComponentInChildren<TextMesh>();
         isDie = false;
         tempitems = new List<int>();
         StartCoroutine(CheckRoutine());
@@ -97,8 +90,6 @@ public class Zombie : NetworkBehaviour
 
     void Update()
     {
-        hptext.text = gobject.HP == 0 ? "DIE" : gobject.HP.ToString();
-
         if (isDie && !dieprocessed)
         {
             dieprocessed = true;
@@ -106,7 +97,7 @@ public class Zombie : NetworkBehaviour
             agent.Stop();
             animator.enabled = false;
             Destroy(agent);
-            Invoke("DestroySelf", 10);
+            Destroy(gameObject, 10);
         }
 
         if (HitOnNextFrame)
@@ -211,6 +202,9 @@ public class Zombie : NetworkBehaviour
     {
         animator.SetBool("isAttack", false);
 
+        if (!NetworkServer.active)
+            return;
+
         var collist = Physics.OverlapSphere(transform.position + transform.TransformDirection(new Vector3(0, 0, 0.75f)), 0.5f);
 
         for (int i = 0; i < collist.Length; i++)
@@ -223,7 +217,7 @@ public class Zombie : NetworkBehaviour
             }
             if (player)
             {
-                player.CmdHit(gameObject, player.gameObject, 10);
+                player.Hit(gameObject, player.gameObject, 10);
             }
         }
     }
@@ -245,6 +239,7 @@ public class Zombie : NetworkBehaviour
             var oi = obj.GetComponent<OtherInventory>();
             oi.enabled = true;
             oi.OpenToDestroy = true;
+            Destroy(obj, 10);
             gameObject.GetComponent(GameData.Instance.ZombieTypeTypes[(int)zombietype]).SendMessage("GetItems", this, SendMessageOptions.DontRequireReceiver);
             for (int i = 0; i < 30; i++)
             {

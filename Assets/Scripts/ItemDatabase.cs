@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemDatabase : MonoBehaviour
+public class ItemDatabase : Singleton<ItemDatabase>
 {
-    public static ItemDatabase instance;
-
     public enum ItemType
     {
         None,
@@ -34,7 +32,6 @@ public class ItemDatabase : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
         Items = new Dictionary<int, ItemDic>();
         foreach (var item in tempItemDic)
         {

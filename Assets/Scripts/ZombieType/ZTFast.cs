@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZTFast : ZombieType
+public class ZTFast : ZombieBase
 {
     void Start()
     {
+        zombie = GetComponent<Zombie>();
         PossibleDropItem = new List<int>();
         PossibleDropItem.Add(1);
         PossibleDropItem.Add(27);
 
-        zombie = GetComponent<Zombie>();
-        //zombie.gobject.HP = 50;
         zombie.agent.speed *= 2;
     }
 }

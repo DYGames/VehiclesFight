@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UIMng : MonoBehaviour
 {
     PlayerStatus Players;
-    Player Playerp;
     Inventory Inventory;
 
     public Image HPBar;
@@ -16,7 +15,6 @@ public class UIMng : MonoBehaviour
     
     void Start()
     {
-        Playerp = transform.parent.GetComponent<Player>();
         Players = transform.parent.GetComponent<PlayerStatus>();
         Inventory = transform.parent.GetComponent<PlayerInventory>().UIInventory;
     }
@@ -55,11 +53,6 @@ public class UIMng : MonoBehaviour
                 else
                     QuickItems[i].sprite = null;
             }
-          //  if (Playerp.PlayerState == (Playerp.PlayerState | Player.PLAYERSTATE.WALK)
-          //      || Playerp.PlayerState == (Playerp.PlayerState | Player.PLAYERSTATE.RUN))
-          //      anim.Play("Shake");
-          //  else
-          //      anim.Stop("Shake");
         }
         else
         {

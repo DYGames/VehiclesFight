@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 
 public class OtherInventory : NetworkBehaviour
 {
+    [SyncVar]
     public bool OpenToDestroy = false;
 
     [SyncVar]

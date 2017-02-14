@@ -8,8 +8,6 @@ public class WaveMng : MonoBehaviour
     public List<Transform> SpawnPoints;
     public List<BoxCollider> DaySpawnPoints;
 
-    List<GameObject> SpawnZombies;
-
     public bool isNight;
 
     public bool isNextDay;
@@ -24,6 +22,8 @@ public class WaveMng : MonoBehaviour
 
     public GameObject obj;
 
+    bool clearFlag;
+
     void Start()
     {
         isNight = false;
@@ -31,9 +31,7 @@ public class WaveMng : MonoBehaviour
         isWaitForNextWave = true;
         Wave = 1;
         StartCoroutine(SpawnSomeWhere());
-        SpawnZombies = new List<GameObject>();
-        if (NetworkServer.active)
-            GameMng.instance.CmdSetClearFlag(false);
+        clearFlag = false;
     }
 
     IEnumerator SpawnSomeWhere()
@@ -51,55 +49,66 @@ public class WaveMng : MonoBehaviour
 
     void Update()
     {
-        if (TimeController.instance != null)
+        if (GameMng.instance != null)
         {
             if (TimeController.instance.CurrentTime > 18 && !isNight)
                 StartNight();
             if (TimeController.instance.CurrentTime > 6 && isNight && isNextDay)
                 EndNight();
-            if (isNight && !isNextDay && TimeController.instance.isNextDayForWaveMng)
+            if (NetworkServer.active)
             {
-                isNextDay = true;
-                TimeController.instance.isNextDayForWaveMng = false;
-            }
-        }
-        if (GameMng.instance != null && NetworkServer.active)
-        {
-            GameMng.instance.CmdSetClearFlag(true);
-            for (int i = 0; i < SpawnZombies.Count; i++)
-            {
-                if (SpawnZombies[i] == null)
+                if (isNight && !isNextDay && TimeController.instance.isNextDayForWaveMng)
                 {
-                    SpawnZombies.RemoveAt(i);
+                    isNextDay = true;
+                    TimeController.instance.isNextDayForWaveMng = false;
                 }
-            }
-
-            for (int i = 0; i < SpawnZombies.Count; i++)
-            {
-                Zombie zom = SpawnZombies[i].GetComponent<Zombie>();
-                if (zom != null)
+                clearFlag = true;
+                for (int i = 0; i < GameMng.instance.SpawnZombies.Count; i++)
                 {
-                    if (!zom.isDie)
+                    if (GameMng.instance.SpawnZombies[i].zombie == null)
                     {
-                        GameMng.instance.CmdSetClearFlag(false);
+                        GameMng.instance.SpawnZombies.RemoveAt(i);
+                    }
+                }
+
+                for (int i = 0; i < GameMng.instance.SpawnZombies.Count; i++)
+                {
+                    Zombie zom = GameMng.instance.SpawnZombies[i].zombie.GetComponent<Zombie>();
+                    if (zom != null)
+                    {
+                        if (!zom.isDie)
+                        {
+                            clearFlag = false;
+                        }
+                    }
+                }
+
+                if (clearFlag && isWaitForNextWave && isNight)
+                {
+                    isWaitForNextWave = false;
+                    if (NetworkServer.active)
+                        GameMng.instance.CmdCheckCurSpawnPoint();
+                    if (GameMng.instance.CurSpawnPoint != -1)
+                    {
+                        GameMng.instance.CmdSetStartWaveFlag(true, Wave);
+                        StartCoroutine(StartWave(GameMng.instance.CurSpawnPoint));
                     }
                 }
             }
-        }
-        if (GameMng.instance != null && GameMng.instance.ClearFlag == true && isWaitForNextWave && isNight)
-        {
-            isWaitForNextWave = false;
-            GameMng.instance.CmdCheckCurSpawnPoint();
-            StartCoroutine(StartWave(GameMng.instance.CurSpawnPoint));
-        }
 
+            if (GameMng.instance.StartWaveFlag && GameMng.instance.CurrentWaveNum == Wave)
+            {
+                StartCoroutine(StartWave(GameMng.instance.CurSpawnPoint));
+            }
+
+        }
     }
 
     public void StartNight()
     {
         isNight = true;
         isWaitForNextWave = true;
-    }
+    }   
 
     public void EndNight()
     {
@@ -115,28 +124,31 @@ public class WaveMng : MonoBehaviour
 
     public IEnumerator StartWave(int n)
     {
+        int wv = Wave;
+        Wave++;
         text.gameObject.SetActive(true);
-        text.text = "Wave " + Wave.ToString() + " Will Start";
+        text.text = "Wave " + wv.ToString() + " Will Start";
         Invoke("ActiveOffText", 2);
 
         yield return new WaitForSeconds(5);
 
         text.gameObject.SetActive(true);
-        text.text = "Wave " + Wave.ToString() + " Start";
+        text.text = "Wave " + wv.ToString() + " Start";
         FindObjectOfType<ThirdPersonCamera>().AttachTempTarget(SpawnPoints[n].transform);
         Invoke("Detach", 1);
         isWaitForNextWave = true;
         if (NetworkServer.active)
         {
-            for (int i = 0; i < Wave * 5; i++)
+            for (int i = 0; i < wv * 5; i++)
             {
                 GameMng.instance.CmdSpawnMinion(SpawnPoints[n].position, false, gameObject);
-                SpawnZombies.Add(obj);
+                GameMng.ZOB oo = new GameMng.ZOB();
+                oo.zombie = obj;
+                GameMng.instance.SpawnZombies.Add(oo);
                 yield return new WaitForSeconds(0.4f);
             }
         }
         Invoke("ActiveOffText", 2);
-        Wave++;
     }
 
     void Detach()

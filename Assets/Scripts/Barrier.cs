@@ -11,11 +11,6 @@ public class Barrier : NetworkBehaviour
     public int ID;
     [SyncVar]
     public bool isBroken;
-   // [SyncVar]
-   // public Vector2 Scale;
-
-    public TextMesh hpText;
-
 
     public bool isPreview;
 
@@ -33,7 +28,6 @@ public class Barrier : NetworkBehaviour
 
     void Update()
     {
-        hpText.text = gobject.HP.ToString();
         if (!isPreview && isBroken)
         {
             meshrenderer.material = GameMng.instance.Blur;

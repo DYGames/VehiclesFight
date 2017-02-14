@@ -18,11 +18,11 @@ public class TimeController : NetworkBehaviour
     void Awake()
     {
         instance = this;
-        isNextDayForWaveMng = false;
     }
 
     void Start()
     {
+        isNextDayForWaveMng = false;
         RenderSettings.fog = true;
     }
 

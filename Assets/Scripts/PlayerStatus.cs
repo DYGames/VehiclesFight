@@ -16,9 +16,9 @@ public class PlayerStatus : NetworkBehaviour
 
     bool dieproccesed;
 
-    Rigidbody rigid;
-
     PlayerInventory inventory;
+
+    public GameObject[] Weapons;
 
     void Start()
     {
@@ -28,7 +28,6 @@ public class PlayerStatus : NetworkBehaviour
         CreepScore = 0;
         EquipItem = 0;
         dieproccesed = false;
-        rigid = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -64,6 +63,11 @@ public class PlayerStatus : NetworkBehaviour
         StartCoroutine(DieProcessing());
     }
 
+    public void Hit(GameObject hitter, GameObject p, int dmg)
+    {
+        CmdHit(hitter, p, dmg);
+    }
+
     [Command]
     public void CmdHit(GameObject hitter, GameObject p, int dmg)
     {
@@ -97,14 +101,15 @@ public class PlayerStatus : NetworkBehaviour
     public void setEquipItem(int id)
     {
         EquipItem = id;
-        Use(id);
+        Item item = inventory.UIInventory.getItemByNum(30 + EquipItem);
+        Use(item.id);
     }
 
     void Use(int id)
     {
-        if (ItemDatabase.instance.Items[inventory.UIInventory.getItemByNum(30 + EquipItem).id].itemType == ItemDatabase.ItemType.Food)
+        if (ItemDatabase.instance.Items[id].itemType == ItemDatabase.ItemType.Food)
         {
-            switch (inventory.UIInventory.getItemByNum(30 + EquipItem).id)
+            switch (id)
             {
                 case 9:
                     gobject.CmdsetHPHeal(10, gobject.MAXHP * 0.1f);
@@ -124,6 +129,56 @@ public class PlayerStatus : NetworkBehaviour
             //EFFECT
             //PLAYER BODY AND LOCAL SCREEN
         }
+        if (ItemDatabase.instance.Items[id].itemType == ItemDatabase.ItemType.RepairMaterial)
+        {
+            RaycastHit hitinfo;
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hitinfo))
+            {
+                GameObject ob = Instantiate(GameMng.instance.gBarrier, hitinfo.point, Quaternion.identity);
+                ob.transform.LookAt(GetComponent<Player>().transform);
+                ob.transform.localEulerAngles = new Vector3(0, ob.transform.localEulerAngles.y, ob.transform.localEulerAngles.z);
+                NetworkServer.Spawn(ob);
+                StartCoroutine(setNewBarrierRoutine(ob, id - 13));
+            }
+        }
+        if (ItemDatabase.instance.Items[id].itemType == ItemDatabase.ItemType.Weapon)
+        {
+            switch (id)
+            {
+                case 1:
+                case 4:
+                    WeaponOn(0);
+                    break;
+                case 2:
+                case 3:
+                    WeaponOn(1);
+                    break;
+                default:
+                    return;
+            }
+        }
+    }
+
+    void WeaponOn(int id)
+    {
+        for (int i = 0; i < Weapons.Length; i++)
+        {
+            Weapons[i].SetActive(false);
+            if (i == id)
+                Weapons[i].SetActive(true);
+        }
+    }
+
+    IEnumerator setNewBarrierRoutine(GameObject obj, int id)
+    {
+        yield return null;
+        CmdsetNewBarrier(obj, id);
+    }
+
+    [Command]
+    void CmdsetNewBarrier(GameObject obj, int id)
+    {
+        obj.GetComponent<Barrier>().CmdSetNewBarrier(id);
     }
 
 }

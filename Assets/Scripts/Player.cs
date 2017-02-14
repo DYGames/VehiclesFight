@@ -26,7 +26,7 @@ public class Player : NetworkBehaviour
     float MaxSpeed;
     float fov;
     Rigidbody rigid;
-    int AttackDmg;
+    public int AttackDmg;
     public PLAYERSTATE PlayerState;
     [SyncVar]
     public PLAYERTYPE PlayerType;
@@ -85,6 +85,8 @@ public class Player : NetworkBehaviour
     [SyncVar]
     public bool FlashActive;
 
+    public ClearMng clearmng;
+
     void Start()
     {
         Fwd = 0;
@@ -96,7 +98,6 @@ public class Player : NetworkBehaviour
         JumpFlag = false;
         FlashActive = false;
         transform.position = new Vector3(-9.57f, 3.5f, -0.79f);
-        AttackDmg = 20;
         MaxSpeed = 0;
         PlayerState = PLAYERSTATE.IDLE;
         fov = 60;
@@ -106,7 +107,7 @@ public class Player : NetworkBehaviour
         Animator wantedAnim = GetComponentsInChildren<Animator>()[1];
         Destroy(wantedAnim);
         animator.avatar = wantedAnim.avatar;
-
+        clearmng = GetComponent<ClearMng>();
         if (!isLocalPlayer)
         {
             QuickSlot.SetActive(false);
@@ -134,7 +135,7 @@ public class Player : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!isLocalPlayer || ClearMng.instance.PlayerClear || playerstatus.gobject.HP <= 0)
+        if (!isLocalPlayer || clearmng.PlayerClear || playerstatus.gobject.HP <= 0)
             return;
         Move();
     }
@@ -273,7 +274,7 @@ public class Player : NetworkBehaviour
             {
                 inventory.UIInventory.DestroyItem(inventory.UIInventory.getItemByNum(30 + playerstatus.EquipItem), 1);
                 SpawnCampFire(hitinfo.point + (Vector3.one / 2.0f));
-                ClearMng.instance.setCampFirePlant();
+                clearmng.setCampFirePlant();
             }
 
             if (barrier != null
@@ -294,7 +295,7 @@ public class Player : NetworkBehaviour
             {
                 inventory.UIInventory.DestroyItem(inventory.UIInventory.getItemByNum(30 + playerstatus.EquipItem), 1);
                 CmdSetRadio(hitinfo.point + (Vector3.one / 2.0f));
-                ClearMng.instance.setRadio();
+                clearmng.setRadio();
             }
         }
 
@@ -373,6 +374,7 @@ public class Player : NetworkBehaviour
         else
             inputVector = Vector3.zero;
 
+        animator.SetBool("isOnLadder", isLadder);
         if (isLadder)
         {
             rigid.velocity = new Vector3(0, inputVector.z * 5, 0);
@@ -466,7 +468,7 @@ public class Player : NetworkBehaviour
                 {
                     groundVelocity = Vector3.zero;
                 }
-                if (!ClearMng.instance.PlayerClear)
+                if (!clearmng.PlayerClear)
                     CheckClear(collision.gameObject);
                 isGround = true;
             }
@@ -501,7 +503,7 @@ public class Player : NetworkBehaviour
         {
             trs.GetComponent<Animator>().Stop();
             GameMng.instance.ClearUI.SetActive(true);
-            ClearMng.instance.PlayerClear = true;
+            clearmng.PlayerClear = true;
         }
     }
 

@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZTHeavy : ZombieType
+public class ZTHeavy : ZombieBase
 {
     void Start()
     {
+        zombie = GetComponent<Zombie>();
         PossibleDropItem = new List<int>();
         PossibleDropItem.Add(1);
         PossibleDropItem.Add(27);
-
-        zombie = GetComponent<Zombie>();
     }
 
 }
