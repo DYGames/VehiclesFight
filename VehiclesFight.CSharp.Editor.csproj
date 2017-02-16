@@ -137,10 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Positions.txt" />
-    <None Include="Assets\Resources\Water\Water\Shaders\FXWaterPro.shader" />
-    <None Include="Assets\Resources\Water\Water4\Shaders\FXWater4Advanced.shader" />
-    <None Include="Assets\Resources\Water\Water4\Shaders\FXWater4Simple.shader" />
-    <None Include="Assets\Resources\Water\Water4\Shaders\WaterInclude.cginc" />
     <None Include="Assets\Scripts\Blur.shader" />
     <None Include="Assets\Scripts\HalfLambert.shader" />
     <None Include="Assets\Scripts\IgnoreFog.shader" />

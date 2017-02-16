@@ -19,14 +19,30 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4035005985706358}
-  - component: {fileID: 33432462687747352}
-  - component: {fileID: 65317618138306478}
-  - component: {fileID: 23525226717178416}
   - component: {fileID: 54824593134139394}
   - component: {fileID: 114656008067733742}
   - component: {fileID: 114338286408703788}
   m_Layer: 10
   m_Name: ItemBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1728741164646106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4125861032093994}
+  - component: {fileID: 33552659118768090}
+  - component: {fileID: 23139296310779050}
+  - component: {fileID: 95536506526098444}
+  - component: {fileID: 65458822436515968}
+  m_Layer: 0
+  m_Name: leather_pocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,17 +56,31 @@ Transform:
   m_GameObject: {fileID: 1665336078705140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 181.17624, y: 5.598975, z: 45.52047}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
-  m_Children: []
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4125861032093994}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23525226717178416
+--- !u!4 &4125861032093994
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728741164646106}
+  m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.32951352, y: 0.14645045, z: 0.000000006401552}
+  m_LocalScale: {x: 0.25231373, y: 0.3, z: 0.3}
+  m_Children: []
+  m_Father: {fileID: 4035005985706358}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23139296310779050
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1665336078705140}
+  m_GameObject: {fileID: 1728741164646106}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -58,7 +88,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a90993a068bd6234796a24405e8828b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -66,7 +96,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_SelectedEditorRenderState: 3
@@ -76,13 +106,13 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &33432462687747352
+--- !u!33 &33552659118768090
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1665336078705140}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_GameObject: {fileID: 1728741164646106}
+  m_Mesh: {fileID: 4300000, guid: 9a66e597ad9bfa14ba6245e7f3d98e22, type: 3}
 --- !u!54 &54824593134139394
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -98,18 +128,35 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &65317618138306478
+--- !u!65 &65458822436515968
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1665336078705140}
+  m_GameObject: {fileID: 1728741164646106}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3.1850193, y: 3.8550465, z: 2.7928202}
+  m_Center: {x: -0.00000005960464, y: 0.65522444, z: 1.1544017}
+--- !u!95 &95536506526098444
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1728741164646106}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 9a66e597ad9bfa14ba6245e7f3d98e22, type: 3}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114338286408703788
 MonoBehaviour:
   m_ObjectHideFlags: 1

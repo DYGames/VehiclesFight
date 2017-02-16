@@ -12,7 +12,8 @@ public class UIMng : MonoBehaviour
     public Text Money;
     public Text CreepScore;
     public Image[] QuickItems;
-    
+    public Sprite NoneImage;
+
     void Start()
     {
         Players = transform.parent.GetComponent<PlayerStatus>();
@@ -51,7 +52,7 @@ public class UIMng : MonoBehaviour
                     QuickItems[i].color = new Color(System.Convert.ToInt32(i != Players.EquipItem), 1, 1);
                 }
                 else
-                    QuickItems[i].sprite = null;
+                    QuickItems[i].sprite = NoneImage;
             }
         }
         else

@@ -8,6 +8,7 @@ public class ClearMng : NetworkBehaviour
     public GameObject RescueObject;
 
     public bool PlayerClear;
+    public bool isUpdate;
 
     void Start()
     {
@@ -26,7 +27,7 @@ public class ClearMng : NetworkBehaviour
             CmdSetRemainTime();
         }
 
-        if (isLocalPlayer && isServer)
+        if (isLocalPlayer && isServer && isUpdate)
         {
             CmdUpdateCurrentTime();
         }

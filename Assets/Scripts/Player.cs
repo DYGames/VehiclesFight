@@ -31,7 +31,7 @@ public class Player : NetworkBehaviour
     [SyncVar]
     public PLAYERTYPE PlayerType;
 
-    PlayerStatus playerstatus;
+    public PlayerStatus playerstatus;
 
     public GameObject effect;
     public GameObject BulletMark;
@@ -86,6 +86,15 @@ public class Player : NetworkBehaviour
     public bool FlashActive;
 
     public ClearMng clearmng;
+
+    public Vector3 GunIdlePosition;
+    public Vector3 GunIdleRotation;
+
+    public Vector3 GunWalkPosition;
+    public Vector3 GunWalkRotation;
+
+    public Vector3 GunZoomPosition;
+    public Vector3 GunZoomRotation;
 
     void Start()
     {
@@ -323,6 +332,7 @@ public class Player : NetworkBehaviour
             if (sca[i].transform.gameObject.name.Equals("Ladder"))
                 isLadder = true;
         }
+        Item item = inventory.UIInventory.getItemByNum(30 + playerstatus.EquipItem);
 
         if (!isInvOn && !isOtherInvOn && !isWorkBenchOn)
         {
@@ -343,6 +353,12 @@ public class Player : NetworkBehaviour
             {
                 MaxSpeed = 0;
                 fov = 60;
+
+                if (item.id == 1 || item.id == 4)
+                {
+                    playerstatus.Weapons[0].transform.localPosition = GunIdlePosition;
+                    playerstatus.Weapons[0].transform.localEulerAngles = GunIdleRotation;
+                }
             }
             if (PlayerState == (PlayerState | PLAYERSTATE.WALK))
             {
@@ -357,8 +373,22 @@ public class Player : NetworkBehaviour
                 MaxSpeed = DefinedSpeed * 2f;
                 fov = 55;
             }
+
+            if(PlayerState == (PlayerState | PLAYERSTATE.WALK) || PlayerState == (PlayerState | PLAYERSTATE.RUN))
+            {
+                if (item.id == 1 || item.id == 4)
+                {
+                    playerstatus.Weapons[0].transform.localPosition = GunWalkPosition;
+                    playerstatus.Weapons[0].transform.localEulerAngles = GunWalkRotation;
+                }
+            }
             if (PlayerState == (PlayerState | PLAYERSTATE.ZOOM))
             {
+                if (item.id == 1 || item.id == 4)
+                {
+                    playerstatus.Weapons[0].transform.localPosition = GunZoomPosition;
+                    playerstatus.Weapons[0].transform.localEulerAngles = GunZoomRotation;
+                }
                 FlashLight.transform.rotation = Camera.main.transform.rotation;
                 fov = 45;
                 if (PlayerState == (PlayerState | PLAYERSTATE.WALK))
@@ -374,7 +404,8 @@ public class Player : NetworkBehaviour
         else
             inputVector = Vector3.zero;
 
-        animator.SetBool("isOnLadder", isLadder);
+        animator.SetBool("isOnLadder", isLadder && inputVector.z != 0);
+        animator.SetBool("isOnAir", (!isGround) && (!isLadder));
         if (isLadder)
         {
             rigid.velocity = new Vector3(0, inputVector.z * 5, 0);
@@ -817,6 +848,18 @@ public class Player : NetworkBehaviour
         MeleeAble = false;
         yield return new WaitForSeconds(0.65f);
         MeleeAble = true;
+    }
+
+    public void InventorySwapped(int fromid, int toid, int fromnum, int tonum)
+    {
+        if (tonum >= 30 && tonum < 35)
+        {
+            if (tonum - 30 == playerstatus.EquipItem)
+            {
+                if (ItemDatabase.instance.Items[toid].itemType == ItemDatabase.ItemType.Weapon)
+                    playerstatus.Use(fromid);
+            }
+        }
     }
 
     void PlayFootstepSound()

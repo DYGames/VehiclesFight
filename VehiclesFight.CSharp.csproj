@@ -78,14 +78,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Resources\Water\Water\Scripts\Displace.cs" />
-    <Compile Include="Assets\Resources\Water\Water\Scripts\GerstnerDisplace.cs" />
-    <Compile Include="Assets\Resources\Water\Water\Scripts\MeshContainer.cs" />
-    <Compile Include="Assets\Resources\Water\Water\Scripts\PlanarReflection.cs" />
-    <Compile Include="Assets\Resources\Water\Water\Scripts\SpecularLighting.cs" />
-    <Compile Include="Assets\Resources\Water\Water\Scripts\Water.cs" />
-    <Compile Include="Assets\Resources\Water\Water\Scripts\WaterBase.cs" />
-    <Compile Include="Assets\Resources\Water\Water\Scripts\WaterTile.cs" />
     <Compile Include="Assets\Scripts\Barrier.cs" />
     <Compile Include="Assets\Scripts\Billboard.cs" />
     <Compile Include="Assets\Scripts\CheckLocalObject.cs" />
@@ -97,7 +89,6 @@
     <Compile Include="Assets\Scripts\Inventory.cs" />
     <Compile Include="Assets\Scripts\Item.cs" />
     <Compile Include="Assets\Scripts\ItemDatabase.cs" />
-    <Compile Include="Assets\Scripts\Ladder.cs" />
     <Compile Include="Assets\Scripts\MainUIMng.cs" />
     <Compile Include="Assets\Scripts\MiniMap.cs" />
     <Compile Include="Assets\Scripts\NetworkUI.cs" />
@@ -125,10 +116,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Positions.txt" />
-    <None Include="Assets\Resources\Water\Water\Shaders\FXWaterPro.shader" />
-    <None Include="Assets\Resources\Water\Water4\Shaders\FXWater4Advanced.shader" />
-    <None Include="Assets\Resources\Water\Water4\Shaders\FXWater4Simple.shader" />
-    <None Include="Assets\Resources\Water\Water4\Shaders\WaterInclude.cginc" />
     <None Include="Assets\Scripts\Blur.shader" />
     <None Include="Assets\Scripts\HalfLambert.shader" />
     <None Include="Assets\Scripts\IgnoreFog.shader" />

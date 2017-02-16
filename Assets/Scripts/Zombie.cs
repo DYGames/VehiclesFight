@@ -36,7 +36,7 @@ public class Zombie : NetworkBehaviour
 
     Animator animator;
 
-    GameObject agenttarget;
+    public GameObject agenttarget;
 
     Vector3 lastAgentVelocity;
     NavMeshPath lastAgentPath;
@@ -50,27 +50,28 @@ public class Zombie : NetworkBehaviour
     [SyncVar]
     bool HitOnNextFrame;
 
-    public GameObject[] zombiemodels;
+    float agentspeed;
 
     void Awake()
     {
-        MaxDistance = Mathf.Infinity;
+        MaxDistance = 15.0f;
     }
 
     void Start()
     {
-        GameObject model = Instantiate(zombiemodels[(int)zombietype], transform);
-        model.transform.localPosition = zombiemodels[(int)zombietype].transform.localPosition;
-        NetworkServer.Spawn(model);
+        transform.GetChild(0).localPosition = new Vector3(0, -1, 0);
         gobject = GetComponent<GObject>();
         ragdoll = GetComponentInChildren<RagDoll>();
         dieprocessed = false;
         agenttarget = null;
-        animator = GetComponentsInChildren<Animator>()[0];
+        animator = GetComponent<Animator>();
+        animator.avatar = GetComponentsInChildren<Animator>()[1].avatar;
+        Destroy(GetComponentsInChildren<Animator>()[1]);
         gameObject.AddComponent(GameData.Instance.ZombieTypeTypes[(int)zombietype]);
         isDie = false;
         tempitems = new List<int>();
         StartCoroutine(CheckRoutine());
+        agentspeed = agent.speed;
     }
 
     public void OnDrawGizmos()
@@ -97,24 +98,32 @@ public class Zombie : NetworkBehaviour
 
 
         if (agenttarget == null)
+        {
+            agent.speed = 0;
+            animator.SetBool("isWalk", false);
             return;
+        }
 
         var collist = Physics.OverlapSphere(transform.position + transform.TransformDirection(new Vector3(0, 0, 0.75f)), 0.5f);
 
         for (int i = 0; i < collist.Length; i++)
         {
-            if (collist[i].gameObject.Equals(agenttarget) && agent && agent.isActiveAndEnabled)
+            if (collist[i].gameObject.Equals(agenttarget) && agent)
             {
-                //animator.SetBool("isAttack", true);
+                animator.SetTrigger("Attack");
                 agent.Stop();
             }
         }
 
-        if (agent && agent.isActiveAndEnabled && Vector3.Distance(agenttarget.transform.position, transform.position) < MaxDistance)
+        if (agent && agent.isActiveAndEnabled)
         {
+            agent.speed = agentspeed;
             agent.SetDestination(new Vector3(agenttarget.transform.position.x, transform.position.y, agenttarget.transform.position.z));
+            if (agent.velocity.magnitude > 0.05f)
+                animator.SetBool("isWalk", true);
+            else
+                animator.SetBool("isWalk", false);
         }
-
     }
 
     void DestroySelf()
@@ -132,7 +141,7 @@ public class Zombie : NetworkBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
-        if (!isDie && agent && agent.isActiveAndEnabled && isServer)
+        if (!isDie && agent && isServer)
         {
             string[] str = { "Player", "Barrier", "Tower" };
             float[] rad = { Mathf.Min(Mathf.Infinity, MaxDistance), Mathf.Min(15, MaxDistance), Mathf.Min(Mathf.Infinity, MaxDistance) };
@@ -151,12 +160,13 @@ public class Zombie : NetworkBehaviour
                 {
                     if (i == 0 && tg.transform.position.y > transform.position.y + 10)
                         continue;
-                    agenttarget = tg.gameObject;
-                    break;
+                    else
+                        break;
                 }
             }
-            StartCoroutine(CheckRoutine());
+            agenttarget = tg == null ? null : tg.gameObject;
         }
+        StartCoroutine(CheckRoutine());
     }
 
     Transform FindNearTarget(Vector3 position, string tag, float radius)

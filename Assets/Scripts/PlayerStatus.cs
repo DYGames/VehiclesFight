@@ -20,8 +20,11 @@ public class PlayerStatus : NetworkBehaviour
 
     public GameObject[] Weapons;
 
+    Animator animator;
+
     void Start()
     {
+        animator = GetComponent<Animator>();
         inventory = GetComponent<Player>().inventory;
         gobject = GetComponent<GObject>();
         Money = 0;
@@ -105,7 +108,7 @@ public class PlayerStatus : NetworkBehaviour
         Use(item.id);
     }
 
-    void Use(int id)
+    public void Use(int id)
     {
         if (ItemDatabase.instance.Items[id].itemType == ItemDatabase.ItemType.Food)
         {
@@ -141,16 +144,23 @@ public class PlayerStatus : NetworkBehaviour
                 StartCoroutine(setNewBarrierRoutine(ob, id - 13));
             }
         }
+                    WeaponOn(-1);
+        animator.SetLayerWeight(0, 0);
+        animator.SetLayerWeight(1, 1);
         if (ItemDatabase.instance.Items[id].itemType == ItemDatabase.ItemType.Weapon)
         {
             switch (id)
             {
                 case 1:
                 case 4:
+                    animator.SetLayerWeight(0, 0);
+                    animator.SetLayerWeight(1, 1);
                     WeaponOn(0);
                     break;
                 case 2:
                 case 3:
+                    animator.SetLayerWeight(0, 1);
+                    animator.SetLayerWeight(1, 0);
                     WeaponOn(1);
                     break;
                 default:

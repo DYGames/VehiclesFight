@@ -124,6 +124,7 @@ public class Inventory : MonoBehaviour
                 Item inum = getItemByNum(num);
                 if (inum != null && CheckTypeofItem(num, SelectedObject.id))
                 {
+                    FindObjectOfType<ThirdPersonCamera>().targetPlayer.InventorySwapped(SelectedObject.id, inum.id, SelectedObject.num, inum.num);
                     if (inum.id == SelectedObject.id && inum.num != SelectedObject.num)
                     {
                         SelectedObject.QTY += inum.QTY;
