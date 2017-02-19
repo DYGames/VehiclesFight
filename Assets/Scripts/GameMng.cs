@@ -129,7 +129,7 @@ public class GameMng : NetworkBehaviour
             if (canDay || (TimeController.instance.CurrentTime > 18 || TimeController.instance.CurrentTime < 6))
             {
                 int zombietypee = Random.Range(0, 4);
-                GameObject zombie = Instantiate(zombieprefab[zombietypee], new Vector3(position.x, 3.5f, position.z), Quaternion.identity);
+                GameObject zombie = Instantiate(zombieprefab[zombietypee], new Vector3(position.x, 2.5f, position.z), Quaternion.identity);
                 zombie.GetComponent<Zombie>().zombietype = (Zombie.ZOMBIETYPE)zombietypee;
                 caller.GetComponent<WaveMng>().obj = zombie;
                 NetworkServer.Spawn(zombie);

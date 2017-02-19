@@ -360,7 +360,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: PlayFootstepSound
+        data: 
+        objectReferenceParameter: {fileID: 1572539186810234, guid: 6ba0724a590e8934ea2abd1fb6a11bbf,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -475,7 +483,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: PlayFootstepSound
+        data: 
+        objectReferenceParameter: {fileID: 1572539186810234, guid: 6ba0724a590e8934ea2abd1fb6a11bbf,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
@@ -590,7 +606,15 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: PlayFootstepSound
+        data: 
+        objectReferenceParameter: {fileID: 1572539186810234, guid: 6ba0724a590e8934ea2abd1fb6a11bbf,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

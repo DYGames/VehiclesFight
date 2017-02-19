@@ -96,6 +96,15 @@ public class Player : NetworkBehaviour
     public Vector3 GunZoomPosition;
     public Vector3 GunZoomRotation;
 
+    public AudioClip bat;
+    public AudioClip footstep;
+    public AudioClip gun;
+    public AudioClip heal;
+    public AudioClip repair;
+    public AudioClip Jump;
+
+    AudioSource audiosource;
+
     void Start()
     {
         Fwd = 0;
@@ -117,6 +126,7 @@ public class Player : NetworkBehaviour
         Destroy(wantedAnim);
         animator.avatar = wantedAnim.avatar;
         clearmng = GetComponent<ClearMng>();
+        audiosource = GetComponent<AudioSource>();
         if (!isLocalPlayer)
         {
             QuickSlot.SetActive(false);
@@ -423,6 +433,8 @@ public class Player : NetworkBehaviour
             {
                 JumpFlag = false;
                 rigid.velocity = new Vector3(rigid.velocity.x, rigid.velocity.y + CalculateJumpVerticalSpeed(), rigid.velocity.z);
+                audiosource.clip = Jump;
+                audiosource.Play();
             }
 
             UpdateAnimator(inputVector);
@@ -576,6 +588,8 @@ public class Player : NetworkBehaviour
             }
             else
                 HitEffectOnWall(hitinfo.point, hitinfo.normal);
+
+            audiosource.PlayOneShot(gun);
         }
         else if ((item.id == 2 || item.id == 3) && MeleeAble)
         {
@@ -591,6 +605,8 @@ public class Player : NetworkBehaviour
                     playerstatus.ZombieHit(Camera.main.transform.position, Camera.main.transform.forward, collist[i].transform.GetComponentInParent<Zombie>().gameObject, AttackDmg);
                 }
             }
+
+            audiosource.PlayOneShot(bat);
         }
         else if (ItemDatabase.instance.Items[item.id].itemType == ItemDatabase.ItemType.RepairTool && MeleeAble)
         {
@@ -605,6 +621,8 @@ public class Player : NetworkBehaviour
                     GameMng.instance.setStatus(collist[i].gameObject.GetComponent<GObject>());
                 }
             }
+
+            audiosource.PlayOneShot(repair);
         }
 
     }
@@ -864,6 +882,6 @@ public class Player : NetworkBehaviour
 
     void PlayFootstepSound()
     {
-
+        audiosource.PlayOneShot(footstep);
     }
 }

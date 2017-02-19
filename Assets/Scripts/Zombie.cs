@@ -52,9 +52,12 @@ public class Zombie : NetworkBehaviour
 
     float agentspeed;
 
+    AudioSource audiosource;
+    public AudioClip[] Clips;
+
     void Awake()
     {
-        MaxDistance = 15.0f;
+        MaxDistance = Mathf.Infinity;
     }
 
     void Start()
@@ -72,6 +75,18 @@ public class Zombie : NetworkBehaviour
         tempitems = new List<int>();
         StartCoroutine(CheckRoutine());
         agentspeed = agent.speed;
+        audiosource = GetComponent<AudioSource>();
+        StartCoroutine(RandomSound());
+    }
+
+    IEnumerator RandomSound()
+    {
+        yield return new WaitForSeconds(Random.Range(3, 6));
+
+        audiosource.clip = Clips[Random.Range(0, Clips.Length)];
+        audiosource.Play();
+
+        StartCoroutine(RandomSound());
     }
 
     public void OnDrawGizmos()

@@ -498,6 +498,7 @@ GameObject:
   - component: {fileID: 54803001827974886}
   - component: {fileID: 136350880356819688}
   - component: {fileID: 114106394321860836}
+  - component: {fileID: 82447929856201742}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -1501,6 +1502,86 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!82 &82447929856201742
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1572539186810234}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95165903966513062
 Animator:
   serializedVersion: 3
@@ -2062,8 +2143,16 @@ MonoBehaviour:
   clearmng: {fileID: 0}
   GunIdlePosition: {x: 0, y: 0, z: 0}
   GunIdleRotation: {x: 0, y: 0, z: 0}
-  GunZoomPosition: {x: 0, y: 0, z: 0}
-  GunZoomRotation: {x: 0, y: 0, z: 0}
+  GunWalkPosition: {x: -0.15, y: -1.13, z: 0.77}
+  GunWalkRotation: {x: -32.9, y: 0, z: 0}
+  GunZoomPosition: {x: -0.35, y: 0.08, z: 1.45}
+  GunZoomRotation: {x: -60.9, y: -108, z: 103}
+  bat: {fileID: 8300000, guid: 90b7f27022b45d14c9bafd8b125f6a11, type: 3}
+  footstep: {fileID: 8300000, guid: 7c12058102cdb6346a2771d748d2c7db, type: 3}
+  gun: {fileID: 8300000, guid: 619fae368d2cf54499a972e89b9863b6, type: 3}
+  heal: {fileID: 8300000, guid: b3b5f9c761471c34c800202034a29187, type: 3}
+  repair: {fileID: 8300000, guid: 43dcf5af16e1b8c4e97d208f720ae711, type: 3}
+  Jump: {fileID: 8300000, guid: 58529d150cd8d324493ea136a9e3d18b, type: 3}
 --- !u!114 &114834521011517104
 MonoBehaviour:
   m_ObjectHideFlags: 1
